@@ -41,7 +41,7 @@ export const Default: Story = {
     children: 'Hover me',
   },
   render: (args) => (
-    <div>
+    <main>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <Tooltip {...args}>
         <button
@@ -57,7 +57,7 @@ export const Default: Story = {
           {args.children}
         </button>
       </Tooltip>
-    </div>
+    </main>
   ),
 }
 
@@ -72,7 +72,7 @@ export const AllDirections: Story = {
     },
   },
   render: () => (
-    <div>
+    <main>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <div
         style={{
@@ -171,7 +171,7 @@ export const AllDirections: Story = {
         </Tooltip>
         <div></div>
       </div>
-    </div>
+    </main>
   ),
 }
 
@@ -183,7 +183,7 @@ export const LongText: Story = {
     direction: 'top',
   },
   render: (args) => (
-    <div>
+    <main>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <Tooltip {...args}>
         <button
@@ -199,7 +199,7 @@ export const LongText: Story = {
           Long Tooltip
         </button>
       </Tooltip>
-    </div>
+    </main>
   ),
 }
 
@@ -214,7 +214,7 @@ export const DifferentTriggers: Story = {
     },
   },
   render: () => (
-    <div>
+    <main>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <div
         style={{
@@ -239,22 +239,30 @@ export const DifferentTriggers: Story = {
           </button>
         </Tooltip>
 
-        <Tooltip title="Span element with tooltip" direction="bottom">
-          <span
-            style={{
-              padding: '4px 8px',
-              backgroundColor: '#f1f5f9',
-              border: '1px solid #cbd5e1',
-              borderRadius: '4px',
-              cursor: 'help',
-            }}
-          >
-            Span Element
-          </span>
-        </Tooltip>
+        <div>
+          <Tooltip title="Span element with tooltip" direction="bottom">
+            <span
+              style={{
+                padding: '4px 8px',
+                backgroundColor: '#f1f5f9',
+                border: '1px solid #cbd5e1',
+                borderRadius: '4px',
+                cursor: 'help',
+              }}
+            >
+              Span Element
+            </span>
+          </Tooltip>
+        </div>
+      </div>
 
+      <div
+        style={{
+          marginTop: '20px',
+        }}
+      >
         <Tooltip title="Icon with helpful information" direction="right">
-          <div
+          <span
             style={{
               width: '24px',
               height: '24px',
@@ -269,9 +277,10 @@ export const DifferentTriggers: Story = {
             }}
           >
             ?
-          </div>
+          </span>
         </Tooltip>
-
+      </div>
+      <div>
         <Tooltip title="Link with additional context" direction="left">
           <a
             href="#"
@@ -285,6 +294,6 @@ export const DifferentTriggers: Story = {
           </a>
         </Tooltip>
       </div>
-    </div>
+    </main>
   ),
 }

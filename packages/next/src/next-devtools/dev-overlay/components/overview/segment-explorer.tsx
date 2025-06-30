@@ -9,6 +9,7 @@ import {
   styles as segmentBoundaryTriggerStyles,
 } from './segment-boundary-trigger'
 import { Tooltip, styles as tooltipStyles } from '../../../components/tooltip'
+import { useState } from 'react'
 
 const BUILTIN_PREFIX = '__next_builtin__'
 
@@ -60,6 +61,11 @@ function PageSegmentTreeLayerPresentation({
   node: SegmentTrieNode
   level: number
 }) {
+  const [shadowRoot] = useState<ShadowRoot | null>(() => {
+    const portal = document.querySelector('nextjs-portal')
+    if (!portal) return null
+    return portal.shadowRoot as ShadowRoot
+  })
   const childrenKeys = Object.keys(node.children)
 
   const sortedChildrenKeys = childrenKeys.sort((a, b) => {
@@ -181,6 +187,10 @@ function PageSegmentTreeLayerPresentation({
                           <Tooltip
                             direction="right"
                             title={`The default Next.js not found is being shown. You can customize this page by adding your own ${fileName} file to the app/ directory.`}
+                            container={shadowRoot!}
+                            offset={8}
+                            bgcolor="var(--color-gray-1000)"
+                            color="var(--color-gray-100)"
                           >
                             <InfoIcon />
                           </Tooltip>
