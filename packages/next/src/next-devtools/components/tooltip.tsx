@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { cx } from '../../dev-overlay/utils/cx'
+import { cx } from '../dev-overlay/utils/cx'
 
 type TooltipDirection = 'top' | 'bottom' | 'left' | 'right'
 
@@ -16,19 +16,22 @@ export function Tooltip({
   const [isVisible, setIsVisible] = useState(false)
   const [position, setPosition] = useState({ top: 0, left: 0 })
   const wrapperRef = useRef<HTMLSpanElement>(null)
+  const isVertical = direction === 'top' || direction === 'bottom'
 
   useEffect(() => {
     if (isVisible && wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect()
-      const scrollTop = window.scrollY || document.documentElement.scrollTop
-      const scrollLeft = window.scrollX || document.documentElement.scrollLeft
 
       setPosition({
-        top: rect.top + scrollTop - rect.height / 2,
-        left: rect.left + scrollLeft - rect.width / 2,
+        top:
+          rect.top -
+          (!isVertical ? rect.height / 2 : 0) * (direction === 'top' ? -1 : 1),
+        left:
+          rect.left -
+          (isVertical ? rect.width / 2 : 0) * (direction === 'left' ? 1 : -1),
       })
     }
-  }, [isVisible])
+  }, [isVisible, direction, isVertical])
 
   const handleMouseEnter = () => {
     setIsVisible(true)
@@ -42,13 +45,13 @@ export function Tooltip({
     <div
       className="tooltip-portal"
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: position.top,
         left: position.left,
         width: wrapperRef.current?.offsetWidth || 0,
         height: wrapperRef.current?.offsetHeight || 0,
         pointerEvents: 'none',
-        zIndex: 9,
+        zIndex: 4,
       }}
     >
       <div className={cx('tooltip', `tooltip--${direction}`)}>
@@ -87,7 +90,7 @@ export const styles = `
   .tooltip-wrapper {
     position: relative;
     display: inline-block;
-    line-height: 0;
+    line-height: 1;
   }
 
   .tooltip {
@@ -111,48 +114,40 @@ export const styles = `
     height: 0;
   }
 
-  /* Top direction */
   .tooltip--top {
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 16px;
+    top: -8px;
+    left: 0;
+    transform: translate(-50%, -100%);
   }
 
   .tooltip-arrow--top {
     top: 100%;
     left: 50%;
-    transform: translateX(-50%);
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     border-top: 6px solid var(--color-gray-1000);
-    transform: translate(-50%, 0);
+    transform: translateX(-50%);
   }
 
-  /* Bottom direction */
   .tooltip--bottom {
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 16px;
+    bottom: -8px;
+    left: 0;
+    transform: translate(-50%, 100%);
   }
 
   .tooltip-arrow--bottom {
     bottom: 100%;
     left: 50%;
-    transform: translateX(-50%);
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     border-bottom: 6px solid var(--color-gray-1000);
-    transform: translate(-50%, 0);
+    transform: translateX(-50%);
   }
 
-  /* Left direction */
   .tooltip--left {
-    right: 100%;
+    left: -8px;
     top: 50%;
-    transform: translateY(-50%);
-    margin-right: 16px;
+    transform: translate(-100%, 0%);
   }
 
   .tooltip-arrow--left {
@@ -161,15 +156,13 @@ export const styles = `
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
     border-left: 6px solid var(--color-gray-1000);
-    transform: translate(0, -50%);
+    transform: translateY(-50%);
   }
 
-  /* Right direction */
   .tooltip--right {
-    left: 100%;
+    right: -8px;
     top: 50%;
-    transform: translateY(-50%);
-    margin-left: 16px;
+    transform: translate(100%, 0%);
   }
 
   .tooltip-arrow--right {
@@ -178,6 +171,6 @@ export const styles = `
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
     border-right: 6px solid var(--color-gray-1000);
-    transform: translate(0, -50%);
+    transform: translateY(-50%);
   }
 `

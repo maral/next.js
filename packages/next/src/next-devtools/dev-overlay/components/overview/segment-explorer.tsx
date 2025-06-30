@@ -8,10 +8,7 @@ import {
   SegmentBoundaryTrigger,
   styles as segmentBoundaryTriggerStyles,
 } from './segment-boundary-trigger'
-import {
-  Tooltip,
-  styles as tooltipStyles,
-} from '../../../userspace/components/tooltip'
+import { Tooltip, styles as tooltipStyles } from '../../../components/tooltip'
 
 const BUILTIN_PREFIX = '__next_builtin__'
 
@@ -357,6 +354,7 @@ export const DEV_TOOLS_INFO_RENDER_FILES_STYLES = css`
   }
 
   ${segmentBoundaryTriggerStyles}
+
   ${tooltipStyles}
 `
 
